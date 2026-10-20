@@ -16,41 +16,294 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+
 # ---------- Visual styling ----------
 st.markdown(
     """
     <style>
+
+    
+    /* Readable placeholder text */
+    .stTextInput input::placeholder,
+    .stTextArea textarea::placeholder {
+        color: #91a4bc !important;
+        opacity: 1 !important;
+        -webkit-text-fill-color: #91a4bc !important;
+    }
+
+
+     /* Civic issue cards */
+    .issue-card {
+        background: linear-gradient(145deg, #182a40, #142337);
+        border: 1px solid #344b63;
+        border-radius: 16px;
+        padding: 1.15rem 1.2rem;
+        min-height: 112px;
+        transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .issue-card:hover {
+        border-color: #65e0cc;
+        transform: translateY(-2px);
+    }
+
+    .issue-card h3 {
+        margin: 0 0 0.55rem 0;
+        font-size: 1.15rem;
+        color: #f5f8ff;
+    }
+
+    .issue-card p {
+        margin: 0;
+        color: #bdcadd;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    /* Improve sidebar text contrast */
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] li,
+    [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] strong {
+        color: #d7e2f0;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
+        color: #b8c8dc;
+    }
+
+    /* Make form labels easier to read */
+    .stTextInput label,
+    .stTextArea label,
+    .stSelectbox label {
+        color: #e1eaf5 !important;
+        font-weight: 600;
+    }
+
+    /* Improve the small descriptions under issue categories */
+    [data-testid="stHorizontalBlock"] [data-testid="stCaptionContainer"] {
+        color: #b8c8dc;
+    }
+
+    /* Keep the main headings bright */
+    h1, h2, h3 {
+        color: #f5f8ff;
+    }
+
+    /* Overall app background and typography */
     .stApp {
-        background: linear-gradient(145deg, #0b1220 0%, #111c30 55%, #17233a 100%);
+        background: linear-gradient(
+            145deg,
+            #0b1220 0%,
+            #101b2d 55%,
+            #14243a 100%
+        );
         color: #f3f6fc;
     }
+
+    .block-container {
+        max-width: 1200px;
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+
+    /* Sidebar */
     [data-testid="stSidebar"] {
-        background: #101a2b;
-        border-right: 1px solid #26344a;
+        background: #0c1626;
+        border-right: 1px solid #293950;
     }
+
+    [data-testid="stSidebar"] h2 {
+        color: #65e0cc;
+    }
+
+    /* Hero banner */
     .hero {
-        padding: 1.6rem 1.8rem;
-        border: 1px solid #34445d;
-        border-radius: 22px;
-        background: linear-gradient(120deg, #182b42, #202443);
-        margin-bottom: 1.2rem;
+        padding: 2.2rem 2.4rem;
+        border: 1px solid #344b63;
+        border-radius: 24px;
+        background: linear-gradient(
+            120deg,
+            #172b42 0%,
+            #202845 60%,
+            #173c45 100%
+        );
+        margin-bottom: 1.8rem;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
     }
+
+    .hero h1 {
+        color: #ffffff;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 750;
+        letter-spacing: -0.04em;
+        line-height: 1.15;
+    }
+
     .eyebrow {
         color: #65e0cc;
         font-size: 0.78rem;
-        font-weight: 700;
+        font-weight: 750;
         letter-spacing: 0.14em;
         text-transform: uppercase;
+        margin-bottom: 0.6rem;
     }
-    .muted { color: #b8c4d8; }
-    div.stButton > button, div.stFormSubmitButton > button {
+
+    .muted {
+        color: #bdcadd;
+        line-height: 1.7;
+    }
+
+    /* Section headings */
+    h2, h3 {
+        color: #f3f6fc;
+        letter-spacing: -0.02em;
+    }
+
+    /* Civic issue columns */
+    [data-testid="stHorizontalBlock"] {
+        gap: 1rem;
+    }
+
+    /* Form surfaces */
+    [data-testid="stForm"] {
+        background: rgba(23, 39, 60, 0.78);
+        border: 1px solid #30445d;
+        border-radius: 18px;
+        padding: 1.35rem;
+    }
+    /* Complaint draft form polish */
+[data-testid="stForm"]:has(input[key="draft_locality_input"]) {
+    background: linear-gradient(145deg, #172b42, #14243a);
+    border: 1px solid #3b5872;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+[data-testid="stForm"] textarea {
+    min-height: 130px;
+    line-height: 1.6;
+}
+
+    /* Inputs */
+    
+    /* Dark, polished input fields */
+    .stTextInput input,
+    .stTextArea textarea {
+        background-color: #111e30 !important;
+        color: #f3f6fc !important;
+        border: 1px solid #3a4d66 !important;
+        border-radius: 12px !important;
+        padding: 0.7rem 0.85rem !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Teal highlight when a user selects an input */
+    .stTextInput input:focus,
+    .stTextArea textarea:focus {
+        border-color: #65e0cc !important;
+        box-shadow: 0 0 0 2px rgba(101, 224, 204, 0.15) !important;
+    }
+
+    .stSelectbox [data-baseweb="select"] > div {
+        background: #111e30;
+        border-color: #3a4d66;
         border-radius: 10px;
+    }
+
+    /* Buttons */
+    div.stButton > button,
+    div.stFormSubmitButton > button,
+    div.stDownloadButton > button {
+        border-radius: 11px;
         font-weight: 650;
+        min-height: 2.8rem;
+        transition: all 0.2s ease;
+    }
+    /* Teal download button */
+div.stDownloadButton > button {
+    background-color: #65e0cc !important;
+    color: #09202a !important;
+    border: 1px solid #65e0cc !important;
+    border-radius: 11px !important;
+    font-weight: 700 !important;
+    min-height: 2.8rem;
+}
+
+div.stDownloadButton > button:hover {
+    background-color: #83ead9 !important;
+    color: #09202a !important;
+    border-color: #83ead9 !important;
+}
+
+    div.stButton > button[kind="primary"],
+    div.stFormSubmitButton > button[kind="primary"] {
+        background: #65e0cc;
+        color: #09202a;
+        border: 1px solid #65e0cc;
+    }
+
+    div.stButton > button:hover,
+    div.stFormSubmitButton > button:hover,
+    div.stDownloadButton > button:hover {
+        border-color: #65e0cc;
+        color: #65e0cc;
+    }
+    
+    /* Force the research action to use our teal theme */
+    div.stButton > button[kind="primary"],
+    div.stFormSubmitButton > button[kind="primary"],
+    div[data-testid="stFormSubmitButton"] button {
+        background-color: #65e0cc !important;
+        color: #09202a !important;
+        border: 1px solid #65e0cc !important;
+        font-weight: 700 !important;
+        border-radius: 11px !important;
+    }
+
+    div.stButton > button[kind="primary"]:hover,
+    div.stFormSubmitButton > button[kind="primary"]:hover,
+    div[data-testid="stFormSubmitButton"] button:hover {
+        background-color: #83ead9 !important;
+        color: #09202a !important;
+        border-color: #83ead9 !important;
+    }
+    
+    .stTextInput input::placeholder,
+    .stTextArea textarea::placeholder {
+        color: #91a4bc !important;
+        opacity: 1 !important;
+        -webkit-text-fill-color: #91a4bc !important;
+    }
+
+
+
+    /* Results and alerts */
+    [data-testid="stAlert"] {
+        border-radius: 12px;
+    }
+
+    a {
+        color: #65e0cc !important;
+    }
+
+    /* Small-screen spacing */
+    @media (max-width: 768px) {
+        .block-container {
+            padding: 1rem 1rem 2rem;
+        }
+
+        .hero {
+            padding: 1.4rem;
+            border-radius: 18px;
+        }
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
 
 # ---------- Helpers ----------
 SOURCES = {
@@ -194,16 +447,42 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+
 col_a, col_b, col_c = st.columns(3)
+
 with col_a:
-    st.markdown("### 🛣️ Roads")
-    st.caption("Potholes and damaged roads")
+    st.markdown(
+        """
+        <div class="issue-card">
+            <h3>🛣️ Roads</h3>
+            <p>Potholes and damaged roads</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 with col_b:
-    st.markdown("### 🧹 Cleanliness")
-    st.caption("Garbage and sanitation")
+    st.markdown(
+        """
+        <div class="issue-card">
+            <h3>🧹 Cleanliness</h3>
+            <p>Garbage and sanitation</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 with col_c:
-    st.markdown("### 💡 Streetlights")
-    st.caption("Broken or non-working lights")
+    st.markdown(
+        """
+        <div class="issue-card">
+            <h3>💡 Streetlights</h3>
+            <p>Broken or non-working lights</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 
 st.markdown("## 1. Describe the issue")
 
@@ -286,7 +565,7 @@ if "research_result" in st.session_state:
 
 # ---------- Complaint draft ----------
 st.markdown("---")
-st.markdown("## 3. Prepare a complaint draft")
+st.markdown("## Prepare a complaint draft")
 st.caption(
     "This creates editable text only. It does not send a complaint or create a case."
 )
