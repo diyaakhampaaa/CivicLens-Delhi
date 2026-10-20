@@ -6,6 +6,8 @@ from urllib.parse import urlsplit, urlunsplit
 import streamlit as st
 from dotenv import load_dotenv
 from tinyfish import TinyFish
+from civic_sources import get_sources_for_issue
+from map_view import render_delhi_map
 
 load_dotenv()
 
@@ -205,6 +207,25 @@ with col_c:
     st.markdown("### 💡 Streetlights")
     st.caption("Broken or non-working lights")
 
+# ---------- GIS Map Section  ----------
+st.markdown("---")
+selected_location = render_delhi_map()
+
+# Display selected coordinates on the dashboard if available
+if selected_location:
+    st.write(
+        "Selected location:",
+        selected_location["latitude"],
+        selected_location["longitude"],
+    )
+
+# Auto-fill locality name if chosen via the map
+default_locality_value = ""
+if selected_location and selected_location.get("locality") != "Map-selected point":
+    default_loc = selected_location.get("locality", "")
+    if default_loc:
+        default_locality_value = default_loc
+
 st.markdown("## 1. Describe the issue")
 
 with st.form("issue_form"):
@@ -222,6 +243,7 @@ with st.form("issue_form"):
         )
         locality = st.text_input(
             "Delhi locality or neighbourhood",
+            value=default_locality_value,
             placeholder="e.g. Lajpat Nagar",
         )
 
