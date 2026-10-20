@@ -1,0 +1,6 @@
+streamlit
+tinyfish
+python-dotenv
+streamlit-folium
+folium
+pandas
